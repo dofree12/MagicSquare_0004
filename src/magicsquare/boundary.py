@@ -15,7 +15,13 @@ class BoundaryValidationError(Exception):
 
 
 E_UI_MATRIX_SIZE = "E_UI_MATRIX_SIZE"
-MSG_E_UI_MATRIX_SIZE = "Input matrix must be 4 rows of 4 integers each."
+MSG_E_UI_MATRIX_SIZE = (
+    f"Input matrix must be {MATRIX_SIZE} rows of {MATRIX_SIZE} integers each."
+)
+
+
+def _raise_matrix_size_error() -> None:
+    raise BoundaryValidationError(E_UI_MATRIX_SIZE, MSG_E_UI_MATRIX_SIZE)
 
 
 class BoundaryInputValidator:
@@ -24,10 +30,10 @@ class BoundaryInputValidator:
     def validate_matrix_shape(self, matrix: list[list[int]]) -> None:
         """AC-FR01-01: reject non-4×4 boards (row/column lengths only)."""
         if not isinstance(matrix, list) or len(matrix) != MATRIX_SIZE:
-            raise BoundaryValidationError(E_UI_MATRIX_SIZE, MSG_E_UI_MATRIX_SIZE)
+            _raise_matrix_size_error()
         for row in matrix:
             if not isinstance(row, list) or len(row) != MATRIX_SIZE:
-                raise BoundaryValidationError(E_UI_MATRIX_SIZE, MSG_E_UI_MATRIX_SIZE)
+                _raise_matrix_size_error()
 
 
 def validate(matrix: list[list[int]]) -> None:
