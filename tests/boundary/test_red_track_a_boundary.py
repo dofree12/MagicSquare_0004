@@ -1,17 +1,29 @@
-"""Track A (UI / Boundary) RED — Report/10 UI-A-01~06.
+"""Track A (UI / Boundary) — Report/10 UI-A-01~06.
 
 시나리오·계약: Report/10.MagicSquare_DualTrack_RED_TestDesign_Export_Report_2026-04-28.md
-구현 없음; pytest 수집 시 의도적 실패(RED).
+UI-A-01만 GREEN(크기 검증). 나머지는 RED.
 """
 
 import pytest
 
+from magicsquare.boundary import (
+    MSG_E_UI_MATRIX_SIZE,
+    BoundaryValidationError,
+    E_UI_MATRIX_SIZE,
+    validate,
+)
+
 
 class TestUIRedTrackA:
-    """PRD FR-01 / Boundary — 입력·출력 계약 RED."""
+    """PRD FR-01 / Boundary — 입력·출력 계약 (UI-A-01 GREEN, 그 외 RED)."""
 
     def test_ui_a_01_rejects_non_4x4_matrix(self) -> None:
-        pytest.fail("RED: UI-A-01 — E_UI_MATRIX_SIZE (TD-04)")
+        """TD-04: 3×4 — AC-FR01-01 ``E_UI_MATRIX_SIZE``."""
+        matrix_3x4 = [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
+        with pytest.raises(BoundaryValidationError) as excinfo:
+            validate(matrix_3x4)
+        assert excinfo.value.code == E_UI_MATRIX_SIZE
+        assert excinfo.value.message == MSG_E_UI_MATRIX_SIZE
 
     def test_ui_a_02_rejects_blank_count_not_two(self) -> None:
         pytest.fail("RED: UI-A-02 — E_UI_BLANK_COUNT (TD-07)")

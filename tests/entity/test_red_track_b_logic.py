@@ -6,12 +6,23 @@
 
 import pytest
 
+from magicsquare.domain import find_blank_coords
+
 
 class TestFindBlankCoordsRed:
     """find_blank_coords — row-major, FR-02 / BR-05."""
 
     def test_log_b_01_row_major_two_blanks_td01(self) -> None:
-        pytest.fail("RED: LOG-B-01 — find_blank_coords (TD-01)")
+        """L-RED-01 GREEN: PRD TD-01, 1-indexed (2,1) then (2,2)."""
+        td_01 = [
+            [16, 2, 3, 13],
+            [0, 0, 10, 8],
+            [9, 7, 6, 12],
+            [4, 14, 15, 1],
+        ]
+        first, second = find_blank_coords(td_01)
+        assert first == (2, 1)
+        assert second == (2, 2)
 
 
 class TestFindNotExistNumsRed:
